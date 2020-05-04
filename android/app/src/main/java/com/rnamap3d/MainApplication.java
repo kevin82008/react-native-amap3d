@@ -42,6 +42,8 @@ public class MainApplication extends Application implements ReactApplication {
   @Override
   public void onCreate() {
     super.onCreate();
+    CrashCatchHandler crashCatchHandler = CrashCatchHandler.getInstance();//获得单例
+    crashCatchHandler.init(getApplicationContext());//初始化,传入context
     SoLoader.init(this, /* native exopackage */ false);
     initializeFlipper(this); // Remove this line if you don't want Flipper enabled
   }

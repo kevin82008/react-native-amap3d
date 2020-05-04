@@ -27,7 +27,7 @@
     "build": "tsc",
     "build-docs": "typedoc --out docs/api --excludeNotExported --excludePrivate --excludeProtected --exclude src/prop-types.ts --module commonjs --mode file src",
     "start": "node node_modules/react-native/local-cli/cli.js start",
-    "run-android": "node node_modules/react-native/local-cli/cli.js run-android",
+    "android": "node node_modules/react-native/local-cli/cli.js run-android",
     "release-android": "node node_modules/react-native/local-cli/cli.js run-android --variant=release",
     "log-android": "node node_modules/react-native/local-cli/cli.js log-android",
     "reload": "adb reverse tcp:8081 tcp:8081 && adb shell input text rr",
