@@ -18,7 +18,7 @@ internal class AMapClusterPointManager : SimpleViewManager<AMapClusterPoint>() {
 
     override fun getExportedCustomDirectEventTypeConstants(): Map<String, Any>? {
         return MapBuilder.of(
-                "onItemPress", MapBuilder.of("registrationName", "onItemPress")
+                "clusterPointClick", MapBuilder.of("registrationName", "onClusterPointClick")
         )
     }
 

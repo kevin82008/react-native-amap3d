@@ -12,7 +12,9 @@ export default class ClusterPointExample extends Component {
     longitude: 116 + Math.random(),
   }))
 
-  _onItemPress = point => Alert.alert(this._points.indexOf(point).toString())
+  _onClusterPointClick = data => {
+    Alert.alert(JSON.stringify(data))
+  }
 
   render() {
     return (
@@ -20,7 +22,7 @@ export default class ClusterPointExample extends Component {
         <MapView.ClusterPoint
           image="point"
           points={this._points}
-          onItemPress={this._onItemPress}
+          onClusterPointClick={this._onClusterPointClick}
         />
       </MapView>
     )

@@ -23,7 +23,7 @@ export interface ClusterPointProps {
   /**
    * 点击事件
    */
-  onItemPress?: (item: Point) => void;
+  onClusterPointClick?: (item: Point) => void;
 }
 
 /**
@@ -34,17 +34,17 @@ export default class ClusterPoint extends React.PureComponent<ClusterPointProps>
     ...ViewPropTypes,
     points: PropTypes.arrayOf(PointPropType).isRequired,
     image: PropTypes.string,
-    onItemPress: PropTypes.func
+    onClusterPointClick: PropTypes.func
   };
 
-  onItemPress = ({ nativeEvent }) => {
-    if (this.props.onItemPress) {
-      this.props.onItemPress(this.props.points[nativeEvent.index]);
+  onClusterPointClick = ({ nativeEvent }) => {
+    if (this.props.onClusterPointClick) {
+      this.props.onClusterPointClick(nativeEvent);
     }
   };
 
   render() {
-    return <AMapClusterPoint {...this.props} onItemPress={this.onItemPress} />;
+    return <AMapClusterPoint {...this.props} onClusterPointClick={this.onClusterPointClick} />;
   }
 }
 

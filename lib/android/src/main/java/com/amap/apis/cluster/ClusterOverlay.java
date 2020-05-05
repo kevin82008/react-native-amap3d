@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.amap.api.maps.AMap;
 import com.amap.api.maps.AMapUtils;
+import android.graphics.Bitmap;
 import com.amap.api.maps.model.BitmapDescriptor;
 import com.amap.api.maps.model.BitmapDescriptorFactory;
 import com.amap.api.maps.model.CameraPosition;
@@ -79,7 +80,10 @@ public class ClusterOverlay implements AMap.OnCameraChangeListener,
 //默认最多会缓存80张图片作为聚合显示元素图片,根据自己显示需求和app使用内存情况,可以修改数量
         mLruCache = new LruCache<Integer, BitmapDescriptor>(80) {
             protected void entryRemoved(boolean evicted, Integer key, BitmapDescriptor oldValue, BitmapDescriptor newValue) {
-                oldValue.getBitmap().recycle();
+                Bitmap oldBitmap = oldValue.getBitmap();
+                if(null != oldBitmap){
+                    oldBitmap.recycle();
+                }
             }
         };
         if (clusterItems != null) {
