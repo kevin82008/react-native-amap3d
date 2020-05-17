@@ -27,17 +27,9 @@ class AMapClusterPoint(context: Context) : ReactViewGroup(context), AMapOverlay 
         items = ArrayList((0 until points.size())
                 .map {
                     val data = points.getMap(it)
-                
-                    val lat = Math.random() + 39.474923
-                    val lon = Math.random() + 116.027116
-                    val latLng = LatLng(lat, lon, false)
-                    val regionItem = RegionItem(latLng)
-                    items.add(regionItem)
-             
+        
                     val item = RegionItem(data!!.toLatLng())
-                    // if (data!!.hasKey("title")) {
-                    //     item.setTitle(data!!.getString("title"))
-                    // }
+                    items.add(item)
                     item
                 })
         overlay?.setClusterItems(items)
@@ -53,6 +45,8 @@ class AMapClusterPoint(context: Context) : ReactViewGroup(context), AMapOverlay 
                 data.putInt("nums", size)
                 var latLng: LatLng = marker.getPosition();
                 data.putMap("latLng", latLng.toWritableMap())
+                var zoom = map.getCameraPosition().zoom;
+                data.putInt("zoom", zoom);
                 emit(id.hashCode(), "clusterPointClick", data)
             }
         })

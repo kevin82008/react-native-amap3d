@@ -315,7 +315,7 @@ public class ClusterOverlay implements AMap.OnCameraChangeListener,
         for (Cluster cluster : clusters) {
             LatLng clusterCenterPoint = cluster.getCenterLatLng();
             double distance = AMapUtils.calculateLineDistance(latLng, clusterCenterPoint);
-            if (distance < mClusterDistance && mAMap.getCameraPosition().zoom < 19) {
+            if (distance < mClusterDistance && mAMap.getCameraPosition().zoom < 18) {
                 return cluster;
             }
         }
@@ -345,7 +345,9 @@ public class ClusterOverlay implements AMap.OnCameraChangeListener,
                 textView.setBackgroundResource(drawable);
             }
             bitmapDescriptor = BitmapDescriptorFactory.fromView(textView);
-            mLruCache.put(num, bitmapDescriptor);
+            if(null != bitmapDescriptor){
+                mLruCache.put(num, bitmapDescriptor);
+            }
 
         }
         return bitmapDescriptor;
