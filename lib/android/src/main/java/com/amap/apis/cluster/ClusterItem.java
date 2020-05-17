@@ -13,4 +13,8 @@ public interface ClusterItem {
      * @return
      */
      LatLng getPosition();
+
+     String getId();
+
+     String getTitle();
 }

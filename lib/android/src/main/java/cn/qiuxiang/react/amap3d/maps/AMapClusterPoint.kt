@@ -28,7 +28,7 @@ class AMapClusterPoint(context: Context) : ReactViewGroup(context), AMapOverlay 
                 .map {
                     val data = points.getMap(it)
         
-                    val item = RegionItem(data!!.toLatLng())
+                    val item = RegionItem(data!!.toLatLng(),data!!.getString("title"),data!!.getString("id"))
                     items.add(item)
                     item
                 })
@@ -42,11 +42,15 @@ class AMapClusterPoint(context: Context) : ReactViewGroup(context), AMapOverlay 
             override fun onClick(marker:Marker, clusterItems:List<ClusterItem>) {
                 val size: Int = clusterItems.size
                 val data = Arguments.createMap()
-                data.putInt("nums", size)
-                var latLng: LatLng = marker.getPosition();
-                data.putMap("latLng", latLng.toWritableMap())
-                var zoom = map.getCameraPosition().zoom;
-                data.putInt("zoom", zoom);
+                    data.putInt("nums", size)
+                    var latLng: LatLng = marker.getPosition();
+                    data.putMap("latLng", latLng.toWritableMap())
+                    var zoom = map.getCameraPosition().zoom;
+                    data.putInt("zoom", zoom.toInt());
+                if(size == 1){
+                    data.putString("id", clusterItems.get(0).id)
+                   
+                }
                 emit(id.hashCode(), "clusterPointClick", data)
             }
         })

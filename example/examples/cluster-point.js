@@ -7,9 +7,11 @@ export default class ClusterPointExample extends Component {
     title: '点聚合',
   }
 
-  _points = Array(1000).fill(0).map(() => ({
+  _points = Array(1000).fill(0).map((i) => ({
     latitude: 39.5 + Math.random(),
     longitude: 116 + Math.random(),
+    id:`12345`,
+    title:'测试'
   }))
 
   _onClusterPointClick = data => {
@@ -22,7 +24,7 @@ export default class ClusterPointExample extends Component {
         <MapView.ClusterPoint
           image="point"
           points={this._points}
-          onClusterPointClick={this._onClusterPointClick}
+          //onClusterPointClick={this._onClusterPointClick}
         />
       </MapView>
     )

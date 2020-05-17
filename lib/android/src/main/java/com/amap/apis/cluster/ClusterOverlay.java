@@ -11,6 +11,7 @@ import android.util.LruCache;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.widget.TextView;
+import android.widget.LinearLayout;
 
 import com.amap.api.maps.AMap;
 import com.amap.api.maps.AMapUtils;
@@ -338,6 +339,12 @@ public class ClusterOverlay implements AMap.OnCameraChangeListener,
             textView.setGravity(Gravity.CENTER);
             textView.setTextColor(Color.BLACK);
             textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15);
+            LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) textView.getLayoutParams();
+            if(null != lp){
+                lp.setMargins(0, 0, 20, 0);
+                textView.setLayoutParams(lp);
+            }
+            
             if (mClusterRender != null && mClusterRender.getDrawAble(num) != null) {
                 textView.setBackgroundDrawable(mClusterRender.getDrawAble(num));
             } else {
