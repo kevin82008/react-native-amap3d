@@ -25,7 +25,7 @@ import com.amap.api.maps.model.Marker;
 import com.amap.api.maps.model.MarkerOptions;
 import com.amap.api.maps.model.animation.AlphaAnimation;
 import com.amap.api.maps.model.animation.Animation;
-
+import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -53,6 +53,7 @@ public class ClusterOverlay implements AMap.OnCameraChangeListener,
     private float mPXInMeters;
     private boolean mIsCanceled = false;
 
+    private String mClusterKey;
     /**
      * 构造函数
      *
@@ -60,8 +61,8 @@ public class ClusterOverlay implements AMap.OnCameraChangeListener,
      * @param clusterSize 聚合范围的大小（指点像素单位距离内的点会聚合到一个点显示）
      * @param context
      */
-    public ClusterOverlay(AMap amap, int clusterSize, Context context) {
-        this(amap, null, clusterSize, context);
+    public ClusterOverlay(String clusterKey, AMap amap, int clusterSize, Context context) {
+        this(clusterKey, amap, null, clusterSize, context);
 
     }
 
@@ -76,9 +77,10 @@ public class ClusterOverlay implements AMap.OnCameraChangeListener,
      * @param clusterSize
      * @param context
      */
-    public ClusterOverlay(AMap amap, List<ClusterItem> clusterItems,
+    public ClusterOverlay(String clusterKey, AMap amap, List<ClusterItem> clusterItems,
                           int clusterSize, Context context) {
-//默认最多会缓存80张图片作为聚合显示元素图片,根据自己显示需求和app使用内存情况,可以修改数量
+        mClusterKey = clusterKey;
+        //默认最多会缓存80张图片作为聚合显示元素图片,根据自己显示需求和app使用内存情况,可以修改数量
         mLruCache = new LruCache<Integer, BitmapDescriptor>(80) {
             protected void entryRemoved(boolean evicted, Integer key, BitmapDescriptor oldValue, BitmapDescriptor newValue) {
                 Bitmap oldBitmap = oldValue.getBitmap();
@@ -172,13 +174,18 @@ public class ClusterOverlay implements AMap.OnCameraChangeListener,
 
     //点击事件
     @Override
-    public boolean onMarkerClick(Marker arg0) {
+    public boolean onMarkerClick(Marker marker) {
         if (mClusterClickListener == null) {
             return true;
         }
-       Cluster cluster= (Cluster) arg0.getObject();
+       Cluster cluster= (Cluster) marker.getObject();
         if(cluster!=null){
-            mClusterClickListener.onClick(arg0,cluster.getClusterItems());
+            if(cluster.getClusterItems().size() == 1){                 
+                marker.showInfoWindow();
+            }else{
+                mClusterClickListener.onClick(marker,cluster.getClusterItems());
+            }
+            
             return true;
         }
         return false;
@@ -212,10 +219,16 @@ public class ClusterOverlay implements AMap.OnCameraChangeListener,
      * @param cluster
      */
     private void addSingleClusterToMap(Cluster cluster) {
+        cluster.setClusterKey(mClusterKey);
         LatLng latlng = cluster.getCenterLatLng();
         MarkerOptions markerOptions = new MarkerOptions();
         markerOptions.anchor(0.5f, 0.5f)
                 .icon(getBitmapDes(cluster.getClusterCount())).position(latlng);
+        if(cluster.getClusterItems().size()==1){
+            markerOptions.title(cluster.getClusterItems().get(0).getTitle());
+            markerOptions.snippet("");
+        }        
+        
         Marker marker = mAMap.addMarker(markerOptions);
         marker.setAnimation(mADDAnimation);
         marker.setObject(cluster);

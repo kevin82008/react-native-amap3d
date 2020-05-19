@@ -19,8 +19,16 @@ public class Cluster {
     private LatLng mLatLng;
     private List<ClusterItem> mClusterItems;
     private Marker mMarker;
+    private String mClusterKey;
 
 
+    public String getClusterKey(){
+        return mClusterKey;
+    }
+
+    public void setClusterKey(String clusterKey){
+        mClusterKey = clusterKey;
+    }
     Cluster( LatLng latLng) {
 
         mLatLng = latLng;

@@ -17,4 +17,6 @@ public interface ClusterItem {
      String getId();
 
      String getTitle();
+
+     String getSnippet();
 }

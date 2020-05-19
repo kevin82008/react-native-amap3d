@@ -8,15 +8,18 @@ import com.amap.api.maps.model.LatLng;
 public class RegionItem implements ClusterItem {
     private LatLng mLatLng;
     private String mTitle;
+    private String mSnippet;
     private String mId;
+
     public RegionItem(LatLng latLng) {
         mLatLng=latLng;
     }
 
-    public RegionItem(LatLng latLng,String title,String id) {
+    public RegionItem(LatLng latLng,String title,String subTitle, String id) {
         mLatLng=latLng;
         mTitle = title;
         mId = id;
+        mSnippet = subTitle;
     }
     @Override
     public LatLng getPosition() {
@@ -26,7 +29,10 @@ public class RegionItem implements ClusterItem {
     public String getTitle(){
         return mTitle;
     }
-
+    @Override
+    public String getSnippet(){
+        return mSnippet;
+    }
     @Override
     public String getId(){
         return mId;

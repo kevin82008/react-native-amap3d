@@ -6,8 +6,7 @@ import cn.qiuxiang.react.amap3d.toWritableMap
 import com.amap.api.maps.AMap
 import com.amap.api.maps.model.*
 import com.amap.apis.cluster.*
-
-
+import android.view.View
 import com.facebook.react.views.view.ReactViewGroup
 import com.facebook.react.bridge.Arguments
 import com.facebook.react.bridge.ReadableArray
@@ -22,33 +21,38 @@ class AMapClusterPoint(context: Context) : ReactViewGroup(context), AMapOverlay 
     private var icon: BitmapDescriptor? = null
     private var clusterRadius: Float = 100.0f
     private val eventEmitter: RCTEventEmitter = (context as ThemedReactContext).getJSModule(RCTEventEmitter::class.java)
-    
+    var infoWindow: AMapInfoWindow? = null
+    var mClusterKey: String = "";
     fun setPoints(points: ReadableArray) {
         items = ArrayList((0 until points.size())
                 .map {
                     val data = points.getMap(it)
-        
-                    val item = RegionItem(data!!.toLatLng(),data!!.getString("title"),data!!.getString("id"))
+                    val item = RegionItem(data!!.toLatLng(),data!!.getString("title"),"",data!!.getString("id"))
                     items.add(item)
                     item
                 })
         overlay?.setClusterItems(items)
     }
 
+    override fun addView(child: View, index: Int) {
+        super.addView(child, index)
+    }
+
     override fun add(map: AMap) {
-        overlay = ClusterOverlay(map, items,
+        overlay = ClusterOverlay(mClusterKey,map, items,
         dp2px(context, clusterRadius),context)
         overlay!!.setOnClusterClickListener(object : ClusterClickListener {
             override fun onClick(marker:Marker, clusterItems:List<ClusterItem>) {
                 val size: Int = clusterItems.size
                 val data = Arguments.createMap()
-                    data.putInt("nums", size)
-                    var latLng: LatLng = marker.getPosition();
-                    data.putMap("latLng", latLng.toWritableMap())
-                    var zoom = map.getCameraPosition().zoom;
-                    data.putInt("zoom", zoom.toInt());
+                data.putInt("nums", size)
+                var latLng: LatLng = marker.getPosition();
+                data.putMap("latLng", latLng.toWritableMap())
+                var zoom = map.getCameraPosition().zoom;
+                data.putInt("zoom", zoom.toInt());
                 if(size == 1){
                     data.putString("id", clusterItems.get(0).id)
+                    marker?.showInfoWindow()
                    
                 }
                 emit(id.hashCode(), "clusterPointClick", data)
@@ -62,6 +66,10 @@ class AMapClusterPoint(context: Context) : ReactViewGroup(context), AMapOverlay 
 
     override fun remove() {
         overlay?.onDestroy()
+    }
+
+    fun setClusterKey(clusterKey: String) {
+        mClusterKey = clusterKey;
     }
 
     fun setImage(image: String) {

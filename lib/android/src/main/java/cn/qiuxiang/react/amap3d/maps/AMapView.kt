@@ -22,6 +22,7 @@ import com.facebook.react.uimanager.events.RCTEventEmitter
 class AMapView(context: Context) : TextureMapView(context) {
     private val eventEmitter: RCTEventEmitter = (context as ThemedReactContext).getJSModule(RCTEventEmitter::class.java)
     private val markers = HashMap<String, AMapMarker>()
+    private val clusters = HashMap<String, AMapClusterPoint>()
     private val lines = HashMap<String, AMapPolyline>()
     private val locationStyle by lazy {
         val locationStyle = MyLocationStyle()
@@ -111,7 +112,7 @@ class AMapView(context: Context) : TextureMapView(context) {
             false
         }
 
-        map.setInfoWindowAdapter(AMapInfoWindowAdapter(context, markers))
+        map.setInfoWindowAdapter(AMapInfoWindowAdapter(context, markers,clusters))
     }
 
     fun emitCameraChangeEvent(event: String, position: CameraPosition?) {
@@ -140,6 +141,9 @@ class AMapView(context: Context) : TextureMapView(context) {
             }
             if (child is AMapPolyline) {
                 lines[child.polyline?.id!!] = child
+            }
+            if (child is AMapClusterPoint) {
+                clusters[child?.mClusterKey!!] = child;
             }
         }
     }
