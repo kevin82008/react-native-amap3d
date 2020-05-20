@@ -3,6 +3,7 @@ import * as PropTypes from "prop-types";
 import { requireNativeComponent, ViewPropTypes, StyleSheet ,Text} from "react-native";
 import { Point } from "../types";
 import Component from "./component";
+import InfoWindow from "./marker";
 import { mapEventsPropType } from "../prop-types";
 
 const style = StyleSheet.create({
@@ -88,5 +89,3 @@ export default class ClusterPoint extends Component<ClusterPointProps> {
 
 // @ts-ignore
 const AMapClusterPoint = requireNativeComponent("AMapClusterPoint", ClusterPoint);
-// @ts-ignore
-const InfoWindow = requireNativeComponent("AMapInfoWindow", { propTypes: { ...ViewPropTypes } });

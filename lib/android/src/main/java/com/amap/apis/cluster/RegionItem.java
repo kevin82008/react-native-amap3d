@@ -15,10 +15,9 @@ public class RegionItem implements ClusterItem {
         mLatLng=latLng;
     }
 
-    public RegionItem(LatLng latLng,String title,String subTitle, String id) {
+    public RegionItem(LatLng latLng,String title,String subTitle) {
         mLatLng=latLng;
         mTitle = title;
-        mId = id;
         mSnippet = subTitle;
     }
     @Override
@@ -36,5 +35,9 @@ public class RegionItem implements ClusterItem {
     @Override
     public String getId(){
         return mId;
+    }
+
+    public void setId(String id){
+        mId = id;
     }
 }

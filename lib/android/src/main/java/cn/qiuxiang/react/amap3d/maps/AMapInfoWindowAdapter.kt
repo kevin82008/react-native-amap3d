@@ -7,7 +7,6 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import com.amap.api.maps.AMap.InfoWindowAdapter
 import com.amap.api.maps.model.Marker
-import android.widget.Toast
 import com.amap.apis.cluster.Cluster;
 class AMapInfoWindowAdapter(
         private val context: Context,
@@ -17,16 +16,10 @@ class AMapInfoWindowAdapter(
     val paddingTop = context.resources.displayMetrics.density
 
     override fun getInfoWindow(marker: Marker): View? {
-        Toast.makeText(context, "" + marker.getTitle(), Toast.LENGTH_SHORT).show();
         if(marker.getObject() is Cluster ){
             var cluster = marker.getObject() as Cluster
-            Toast.makeText(context, "clusterKey:" + cluster.getClusterKey(), Toast.LENGTH_SHORT).show();
-            if(null != clusters[cluster.getClusterKey()]?.infoWindow){
-                Toast.makeText(context, "不为空:" + cluster.getClusterKey(), Toast.LENGTH_SHORT).show();
-            }
             return clusters[cluster.getClusterKey()]?.infoWindow
         }
-        Toast.makeText(context,"空window", Toast.LENGTH_SHORT).show();
         return markers[marker.id]?.infoWindow
     }
 

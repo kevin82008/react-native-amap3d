@@ -29,4 +29,6 @@ internal class AMapHeatMapManager : SimpleViewManager<AMapHeatMap>() {
     fun setOpacity(heatMap: AMapHeatMap, opacity: Double) {
         heatMap.opacity = opacity
     }
+
+    
 }

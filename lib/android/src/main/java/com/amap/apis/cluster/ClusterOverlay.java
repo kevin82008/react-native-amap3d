@@ -25,10 +25,10 @@ import com.amap.api.maps.model.Marker;
 import com.amap.api.maps.model.MarkerOptions;
 import com.amap.api.maps.model.animation.AlphaAnimation;
 import com.amap.api.maps.model.animation.Animation;
-import android.widget.Toast;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-
+import java.util.Map;
 
 /**
  * Created by yiyi.qi on 16/10/10.
@@ -43,7 +43,7 @@ public class ClusterOverlay implements AMap.OnCameraChangeListener,
     private int mClusterSize;
     private ClusterClickListener mClusterClickListener;
     private ClusterRender mClusterRender;
-    private List<Marker> mAddMarkers = new ArrayList<Marker>();
+    private Map<String, Marker> mAddMarkers = new HashMap<String, Marker>();
     private double mClusterDistance;
     private LruCache<Integer, BitmapDescriptor> mLruCache;
     private HandlerThread mMarkerHandlerThread = new HandlerThread("addMarker");
@@ -143,14 +143,18 @@ public class ClusterOverlay implements AMap.OnCameraChangeListener,
         mMarkerhandler.removeCallbacksAndMessages(null);
         mSignClusterThread.quit();
         mMarkerHandlerThread.quit();
-        for (Marker marker : mAddMarkers) {
+        for (String key : mAddMarkers.keySet()){
+            Marker marker = mAddMarkers.get(key);
             marker.remove();
-
         }
+       
         mAddMarkers.clear();
         mLruCache.evictAll();
     }
 
+    public Marker getMarker(String markerId){
+        return mAddMarkers.get(markerId);
+    }
     //初始化Handler
     private void initThreadHandler() {
         mMarkerHandlerThread.start();
@@ -180,12 +184,7 @@ public class ClusterOverlay implements AMap.OnCameraChangeListener,
         }
        Cluster cluster= (Cluster) marker.getObject();
         if(cluster!=null){
-            if(cluster.getClusterItems().size() == 1){                 
-                marker.showInfoWindow();
-            }else{
-                mClusterClickListener.onClick(marker,cluster.getClusterItems());
-            }
-            
+            mClusterClickListener.onClick(marker,cluster.getClusterItems());
             return true;
         }
         return false;
@@ -198,7 +197,10 @@ public class ClusterOverlay implements AMap.OnCameraChangeListener,
     private void addClusterToMap(List<Cluster> clusters) {
 
         ArrayList<Marker> removeMarkers = new ArrayList<>();
-        removeMarkers.addAll(mAddMarkers);
+        for (String key : mAddMarkers.keySet()){
+            Marker marker = mAddMarkers.get(key);
+            removeMarkers.add(marker);
+        }
         AlphaAnimation alphaAnimation=new AlphaAnimation(1, 0);
         MyAnimationListener myAnimationListener=new MyAnimationListener(removeMarkers);
         for (Marker marker : removeMarkers) {
@@ -235,9 +237,10 @@ public class ClusterOverlay implements AMap.OnCameraChangeListener,
 
         marker.startAnimation();
         cluster.setMarker(marker);
-        mAddMarkers.add(marker);
+        mAddMarkers.put(marker.getId(), marker);
 
     }
+
 
 
 

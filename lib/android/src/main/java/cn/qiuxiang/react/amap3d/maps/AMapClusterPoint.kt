@@ -21,13 +21,14 @@ class AMapClusterPoint(context: Context) : ReactViewGroup(context), AMapOverlay 
     private var icon: BitmapDescriptor? = null
     private var clusterRadius: Float = 100.0f
     private val eventEmitter: RCTEventEmitter = (context as ThemedReactContext).getJSModule(RCTEventEmitter::class.java)
-    var infoWindow: AMapInfoWindow? = null
+    var infoWindow: AMapClusterInfoWindow? = null
     var mClusterKey: String = "";
     fun setPoints(points: ReadableArray) {
         items = ArrayList((0 until points.size())
                 .map {
                     val data = points.getMap(it)
-                    val item = RegionItem(data!!.toLatLng(),data!!.getString("title"),"",data!!.getString("id"))
+                    val item = RegionItem(data!!.toLatLng(),data!!.getString("title"),"")
+                    item.setId(data!!.getString("id")+"_" + it);
                     items.add(item)
                     item
                 })
@@ -49,13 +50,12 @@ class AMapClusterPoint(context: Context) : ReactViewGroup(context), AMapOverlay 
                 var latLng: LatLng = marker.getPosition();
                 data.putMap("latLng", latLng.toWritableMap())
                 var zoom = map.getCameraPosition().zoom;
-                data.putInt("zoom", zoom.toInt());
+                data.putInt("zoom", zoom.toInt())
+                data.putString("markerId", marker.getId())
                 if(size == 1){
                     data.putString("id", clusterItems.get(0).id)
-                    marker?.showInfoWindow()
-                   
+                    emit(id.hashCode(), "clusterPointClick", data)
                 }
-                emit(id.hashCode(), "clusterPointClick", data)
             }
         })
     }
@@ -66,6 +66,17 @@ class AMapClusterPoint(context: Context) : ReactViewGroup(context), AMapOverlay 
 
     override fun remove() {
         overlay?.onDestroy()
+    }
+
+    fun showInfoWindow(markerId: String){
+        if(!markerId.isEmpty() && null != overlay){
+            var clusterOverlay = overlay as ClusterOverlay
+            var marker : Marker = clusterOverlay.getMarker(markerId);
+            if(null != marker){
+                marker.showInfoWindow()
+            }
+        }
+        
     }
 
     fun setClusterKey(clusterKey: String) {

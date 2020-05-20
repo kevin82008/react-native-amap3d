@@ -10,6 +10,7 @@ import android.view.View
 
 @Suppress("unused")
 internal class AMapClusterPointManager : ViewGroupManager<AMapClusterPoint>() {
+
     override fun getName(): String {
         return "AMapClusterPoint"
     }
@@ -26,7 +27,7 @@ internal class AMapClusterPointManager : ViewGroupManager<AMapClusterPoint>() {
 
     override fun addView(clusterPoint: AMapClusterPoint, view: View, index: Int) {
         when (view) {
-            is AMapInfoWindow -> {
+            is AMapClusterInfoWindow -> {
                 clusterPoint.infoWindow = view
             }
             else -> super.addView(clusterPoint, view, index)
@@ -48,4 +49,10 @@ internal class AMapClusterPointManager : ViewGroupManager<AMapClusterPoint>() {
     fun setImage(clusterPoint: AMapClusterPoint, image: String) {
         clusterPoint.setImage(image);
     }
+
+    @ReactProp(name = "markerId")
+    fun setMarkerId(clusterPoint: AMapClusterPoint, markerId: String) {
+        clusterPoint.showInfoWindow(markerId);
+    }
+
 }
