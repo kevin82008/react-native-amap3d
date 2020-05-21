@@ -3,7 +3,6 @@ import * as PropTypes from "prop-types";
 import { requireNativeComponent, ViewPropTypes, StyleSheet ,Text} from "react-native";
 import { Point } from "../types";
 import Component from "./component";
-import InfoWindow from "./marker";
 import { mapEventsPropType } from "../prop-types";
 
 const style = StyleSheet.create({
@@ -35,14 +34,16 @@ export interface ClusterPointProps {
   /**
    * 点击事件
    */
-  onClusterPointClick?: (item: Point) => void;
+  onClusterPointClick?: (event:{nums:number,latitude:number,longitude:number,zoom:number}, item: Point) => void;
 
   /**
    * 自定义 InfoWindow
    */
   children?: React.ReactChild;
 
-  clusterKey: string
+  clusterKey: string;
+
+  markerId: string
 }
 
 const events = ["onInfoWindowPress"];
@@ -62,17 +63,19 @@ export default class ClusterPoint extends Component<ClusterPointProps> {
 
   onClusterPointClick = ({ nativeEvent }) => {
     if (this.props.onClusterPointClick) {
-      this.props.onClusterPointClick(nativeEvent);
+      var point = {} as Point;
+      if(nativeEvent.nums == 1){
+        var idx = nativeEvent.id.split("_")[1];
+        point = this.props.points[idx];
+      }
+      this.props.onClusterPointClick(nativeEvent,point);
     }
   };
 
   /* eslint-disable class-methods-use-this */
   renderInfoWindow(view: React.ReactChild) {
-    debugger;
     if (view) {
-      return <InfoWindow style={style.overlay}>{view}</InfoWindow>;
-    }else{
-      return <Text>哈哈</Text>
+      return <AMapClusterInfoWindow style={style.overlay}>{view}</AMapClusterInfoWindow>;
     }
     return null;
   }
@@ -80,7 +83,6 @@ export default class ClusterPoint extends Component<ClusterPointProps> {
   nativeComponent = "AMapClusterPoint";
 
   render() {
-    debugger;
     return <AMapClusterPoint {...this.props} onClusterPointClick={this.onClusterPointClick} >
       {this.renderInfoWindow(this.props.children)}
       </AMapClusterPoint>;
@@ -89,3 +91,6 @@ export default class ClusterPoint extends Component<ClusterPointProps> {
 
 // @ts-ignore
 const AMapClusterPoint = requireNativeComponent("AMapClusterPoint", ClusterPoint);
+
+// @ts-ignore
+const AMapClusterInfoWindow = requireNativeComponent("AMapClusterInfoWindow", { propTypes: { ...ViewPropTypes } });
