@@ -54,8 +54,8 @@ class AMapClusterPoint(context: Context) : ReactViewGroup(context), AMapOverlay 
                 data.putString("markerId", marker.getId())
                 if(size == 1){
                     data.putString("id", clusterItems.get(0).id)
-                    emit(id.hashCode(), "clusterPointClick", data)
                 }
+                emit(id, "clusterPointClick", data)
             }
         })
     }
