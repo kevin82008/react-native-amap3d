@@ -55,6 +55,9 @@ class AMapClusterPoint(context: Context) : ReactViewGroup(context), AMapOverlay 
                 if(size == 1){
                     data.putString("id", clusterItems.get(0).id)
                 }
+                if(null == infoWindow){
+                    marker.showInfoWindow();
+                }
                 emit(id, "clusterPointClick", data)
             }
         })
