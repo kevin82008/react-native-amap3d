@@ -22,7 +22,8 @@ internal class AMapViewManager : ViewGroupManager<AMapView>() {
     }
 
     override fun createViewInstance(reactContext: ThemedReactContext): AMapView {
-        return AMapView(reactContext)
+        var mapView:AMapView = AMapView(reactContext)
+        return mapView;
     }
 
     override fun onDropViewInstance(view: AMapView) {

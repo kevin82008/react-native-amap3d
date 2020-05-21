@@ -18,6 +18,14 @@ import com.facebook.react.bridge.ReadableMap
 import com.facebook.react.bridge.WritableMap
 import com.facebook.react.uimanager.ThemedReactContext
 import com.facebook.react.uimanager.events.RCTEventEmitter
+import android.os.Environment;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import com.amap.api.maps.model.CustomMapStyleOptions
+
+
 
 class AMapView(context: Context) : TextureMapView(context) {
     private val eventEmitter: RCTEventEmitter = (context as ThemedReactContext).getJSModule(RCTEventEmitter::class.java)
@@ -32,6 +40,34 @@ class AMapView(context: Context) : TextureMapView(context) {
 
     init {
         super.onCreate(null)
+
+        var buffer1: ByteArray? = null
+        var buffer2: ByteArray? = null
+        var is1: java.io.InputStream? = null
+        var is2: java.io.InputStream? = null
+        try {
+            is1 = this.getResources().getAssets().open("styleMap/style.data")
+            val lenght1: Int = is1.available()
+            buffer1 = ByteArray(lenght1)
+            is1.read(buffer1)
+            is2 = this.getResources().getAssets().open("styleMap/style_extra.data")
+            val lenght2: Int = is2.available()
+            buffer2 = ByteArray(lenght2)
+            is2.read(buffer2)
+        } catch (e: IOException) {
+            e.printStackTrace()
+        } finally {
+            try {
+                if (is1 != null) is1.close()
+                if (is2 != null) is2.close()
+            } catch (e: IOException) {
+                e.printStackTrace()
+            }
+        }
+        val customMapStyleOptions = CustomMapStyleOptions()
+        customMapStyleOptions.setStyleData(buffer1)
+        customMapStyleOptions.setStyleExtraData(buffer2)
+        map.setCustomMapStyle(customMapStyleOptions)
 
         map.setOnMapClickListener { latLng ->
             for (marker in markers.values) {
