@@ -79,8 +79,8 @@ class AMapClusterPoint(context: Context) : ReactViewGroup(context), AMapOverlay 
                 marker.showInfoWindow()
             }
         }
-        
     }
+
 
     fun setClusterKey(clusterKey: String) {
         mClusterKey = clusterKey;

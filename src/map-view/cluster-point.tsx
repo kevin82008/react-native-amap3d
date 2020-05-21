@@ -82,6 +82,10 @@ export default class ClusterPoint extends Component<ClusterPointProps> {
 
   nativeComponent = "AMapClusterPoint";
 
+  showWindowInfo(markId:string){
+    this.call('showInfoWindow',[markId]);
+  }
+
   render() {
     return <AMapClusterPoint {...this.props} onClusterPointClick={this.onClusterPointClick} >
       {this.renderInfoWindow(this.props.children)}

@@ -11,6 +11,23 @@ import android.view.View
 @Suppress("unused")
 internal class AMapClusterPointManager : ViewGroupManager<AMapClusterPoint>() {
 
+    companion object {
+        const val ShowInfoWindow = 3
+    }
+
+    override fun getCommandsMap(): Map<String, Int> {
+        return mapOf(
+                "showInfoWindow" to ShowInfoWindow
+        )
+    }
+
+    override fun receiveCommand(marker: AMapClusterPoint, commandId: Int, args: String) {
+        when (commandId) {
+            ShowInfoWindow -> marker.showInfoWindow(args)
+        }
+    }
+
+
     override fun getName(): String {
         return "AMapClusterPoint"
     }
