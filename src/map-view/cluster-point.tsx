@@ -43,7 +43,6 @@ export interface ClusterPointProps {
 
   clusterKey: string;
 
-  markerId: string
 }
 
 const events = ["onInfoWindowPress"];

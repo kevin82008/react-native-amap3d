@@ -352,14 +352,15 @@ public class ClusterOverlay implements AMap.OnCameraChangeListener,
                 String tile = String.valueOf(num);
                 textView.setText(tile);
             }
-            textView.setGravity(Gravity.CENTER);
+            textView.setGravity(Gravity.RIGHT);
             textView.setTextColor(Color.BLACK);
-            textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15);
-            LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) textView.getLayoutParams();
-            if(null != lp){
-                lp.setMargins(0, 0, 20, 0);
-                textView.setLayoutParams(lp);
-            }
+            textView.setHeight(12);
+            textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
+            // LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) textView.getLayoutParams();
+            // if(null != lp){
+            //     // lp.setMargins(20, 0, 0, 0);
+            //     textView.setLayoutParams(lp);
+            // }
             
             if (mClusterRender != null && mClusterRender.getDrawAble(num) != null) {
                 textView.setBackgroundDrawable(mClusterRender.getDrawAble(num));

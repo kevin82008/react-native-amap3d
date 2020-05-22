@@ -12,7 +12,7 @@ import android.view.View
 internal class AMapClusterPointManager : ViewGroupManager<AMapClusterPoint>() {
 
     companion object {
-        const val ShowInfoWindow = 3
+        const val ShowInfoWindow = 1
     }
 
     override fun getCommandsMap(): Map<String, Int> {
@@ -21,7 +21,7 @@ internal class AMapClusterPointManager : ViewGroupManager<AMapClusterPoint>() {
         )
     }
 
-    override fun receiveCommand(marker: AMapClusterPoint, commandId: Int, args: String) {
+    override fun receiveCommand(marker: AMapClusterPoint, commandId: Int, args: ReadableArray?) {
         when (commandId) {
             ShowInfoWindow -> marker.showInfoWindow(args)
         }
@@ -67,9 +67,9 @@ internal class AMapClusterPointManager : ViewGroupManager<AMapClusterPoint>() {
         clusterPoint.setImage(image);
     }
 
-    @ReactProp(name = "markerId")
-    fun setMarkerId(clusterPoint: AMapClusterPoint, markerId: String) {
-        clusterPoint.showInfoWindow(markerId);
-    }
+    // @ReactProp(name = "markerId")
+    // fun setMarkerId(clusterPoint: AMapClusterPoint, markerId: String) {
+    //     clusterPoint.showInfoWindow(markerId);
+    // }
 
 }
