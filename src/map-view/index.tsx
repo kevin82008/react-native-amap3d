@@ -181,7 +181,7 @@ export interface MapViewProps {
   /**
    * 动画完成事件
    */
-  onAnimateFinished?: () => void;
+  onAMapAnimateFinish?: () => void;
 }
 
 const events = [
@@ -191,7 +191,7 @@ const events = [
   "onStatusChangeComplete",
   "onLocation",
   "onAnimateCancel",
-  "onAnimateFinished"
+  "onAMapAnimateFinish"
 ];
 
 /**
