@@ -71,6 +71,21 @@ class AMapClusterPoint(context: Context) : ReactViewGroup(context), AMapOverlay 
         overlay?.onDestroy()
     }
 
+    
+    
+    fun showWindowById(args: ReadableArray?){
+        if (args == null) return;
+        var id:String? = args.getString(0);
+        if (id == null) return;
+        if(!id.isEmpty() && null != overlay){
+            var clusterOverlay = overlay as ClusterOverlay
+            var marker : Marker = clusterOverlay.getMarkerById(id);
+            if(null != marker){
+                marker.showInfoWindow()
+            }
+        }
+    }
+
     fun showInfoWindow(args: ReadableArray?){
         if (args == null) return;
         var markerId:String? = args.getString(0);

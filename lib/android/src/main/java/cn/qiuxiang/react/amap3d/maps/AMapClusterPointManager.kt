@@ -13,17 +13,20 @@ internal class AMapClusterPointManager : ViewGroupManager<AMapClusterPoint>() {
 
     companion object {
         const val ShowInfoWindow = 1
+        const val ShowWindowById = 2
     }
 
     override fun getCommandsMap(): Map<String, Int> {
         return mapOf(
                 "showInfoWindow" to ShowInfoWindow
+                "showWindowById" to ShowWindowById
         )
     }
 
-    override fun receiveCommand(marker: AMapClusterPoint, commandId: Int, args: ReadableArray?) {
+    override fun receiveCommand(point: AMapClusterPoint, commandId: Int, args: ReadableArray?) {
         when (commandId) {
-            ShowInfoWindow -> marker.showInfoWindow(args)
+            ShowInfoWindow -> point.showInfoWindow(args)
+            ShowWindowById -> point.showWindowById(args);
         }
     }
 

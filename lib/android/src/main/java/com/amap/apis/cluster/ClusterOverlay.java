@@ -44,6 +44,7 @@ public class ClusterOverlay implements AMap.OnCameraChangeListener,
     private ClusterClickListener mClusterClickListener;
     private ClusterRender mClusterRender;
     private Map<String, Marker> mAddMarkers = new HashMap<String, Marker>();
+    private Map<String, Marker> mIdMarkers = new HashMap<String, Marker>();
     private double mClusterDistance;
     private LruCache<Integer, BitmapDescriptor> mLruCache;
     private HandlerThread mMarkerHandlerThread = new HandlerThread("addMarker");
@@ -149,12 +150,18 @@ public class ClusterOverlay implements AMap.OnCameraChangeListener,
         }
        
         mAddMarkers.clear();
+        mIdMarkers.clear();
         mLruCache.evictAll();
     }
 
     public Marker getMarker(String markerId){
         return mAddMarkers.get(markerId);
     }
+
+    public Marker getMarkerById(String id){
+        return mIdMarkers.get(id);
+    }
+
     //初始化Handler
     private void initThreadHandler() {
         mMarkerHandlerThread.start();
@@ -238,7 +245,10 @@ public class ClusterOverlay implements AMap.OnCameraChangeListener,
         marker.startAnimation();
         cluster.setMarker(marker);
         mAddMarkers.put(marker.getId(), marker);
-
+        for(ClusterItem clusterItem :  cluster.getClusterItems()){
+            String id = clusterItem.getId().split("_")[0];
+            mIdMarkers.put(id, marker);
+        }
     }
 
 

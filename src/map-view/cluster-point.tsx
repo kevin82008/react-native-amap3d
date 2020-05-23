@@ -85,6 +85,14 @@ export default class ClusterPoint extends Component<ClusterPointProps> {
     this.call('showInfoWindow',[markId]);
   }
 
+  /**
+   * 
+   * @param id 根据数据的id点击打开弹窗
+   */
+  showWindowById(id:string){
+    this.call('showWindowById',[id])
+  }
+
   render() {
     return <AMapClusterPoint {...this.props} onClusterPointClick={this.onClusterPointClick} >
       {this.renderInfoWindow(this.props.children)}

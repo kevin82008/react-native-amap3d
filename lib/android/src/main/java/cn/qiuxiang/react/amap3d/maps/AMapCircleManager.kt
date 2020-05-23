@@ -9,7 +9,6 @@ import com.facebook.react.uimanager.annotations.ReactProp
 
 @Suppress("unused")
 internal class AMapCircleManager : SimpleViewManager<AMapCircle>() {
-    
     override fun getName(): String {
         return "AMapCircle"
     }
