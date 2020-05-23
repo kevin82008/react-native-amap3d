@@ -18,7 +18,7 @@ internal class AMapClusterPointManager : ViewGroupManager<AMapClusterPoint>() {
 
     override fun getCommandsMap(): Map<String, Int> {
         return mapOf(
-                "showInfoWindow" to ShowInfoWindow
+                "showInfoWindow" to ShowInfoWindow,
                 "showWindowById" to ShowWindowById
         )
     }
